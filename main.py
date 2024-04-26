@@ -1,6 +1,8 @@
-
 from flask import Flask, render_template,request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import imp
+import sel_db
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///diary.db'
@@ -50,13 +52,14 @@ def form_create():
         #запись данных в БД
         card = Card(title=title, subtitle=subtitle, text=text)
         db.session.add(card)
-        db.session.commit()     
-
+        db.session.commit()
+        imp.reload(sel_db)
         return redirect('/')                    #То выводит вот это
     else:
         return render_template('create_card.html')      #В сотальных случаях выводит вот это
 
 
+
 if __name__ == "__main__":          #Если имя "main"
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=8080)
    # app.run(debug=True)
